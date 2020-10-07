@@ -43,6 +43,7 @@ public enum ProjectFeatureFlags {
     ENABLE_ACCURATE_PIE_CHART("accuratePieChartEnabled"),
     ENABLE_KPI_DASHBOARD_DRILL_TO_INSIGHT("enableKPIDashboardDrillToInsight"),
     ENABLE_KPI_DASHBOARD_DRILL_TO_DASHBOARD("enableKPIDashboardDrillToDashboard"),
+    ENABLE_KPI_DASHBOARD_DRILL_DOWN("enableKPIDashboardImplicitDrillDown"),
     ENABLE_TABLE_COLUMN_AUTO_RESIZING("enableTableColumnsAutoResizing"),
     AD_MEASURE_VALUE_FILTER_NULL_AS_ZERO_OPTION("ADMeasureValueFilterNullAsZeroOption"),
     ENABLE_KPI_DASHBOARD_SAVE_AS_NEW("enableKPIDashboardSaveAsNew"),

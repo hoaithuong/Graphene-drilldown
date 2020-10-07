@@ -1,6 +1,7 @@
 package com.gooddata.qa.graphene.fragments.indigo.analyze.reports;
 
 import com.gooddata.qa.graphene.fragments.AbstractFragment;
+import com.gooddata.qa.graphene.fragments.indigo.analyze.pickerDropDown.Drilling;
 import com.gooddata.qa.graphene.utils.ElementUtils;
 import com.gooddata.qa.graphene.utils.WaitUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -97,6 +98,11 @@ public class ChartReport extends AbstractFragment {
         getActions().moveToElement(element).moveByOffset(1, 1).perform();
         final String fillAfterHover = element.getAttribute("fill");
         return !Objects.equals(fillAfterHover, fillBeforeHover);
+    }
+
+    public Drilling openDrillingPicker(Pair<Integer, Integer> position) {
+        clickOnElement(position);
+        return Drilling.getInstance(browser);
     }
 
     public void clickOnElement(Pair<Integer, Integer> position) {

@@ -85,6 +85,7 @@ public class ColorPaletteRequestData {
         GREEN(0, 255, 0),
         BLUE(0, 0, 255),
         YELLOW(255, 255, 0),
+        YELLOW_LIGHT(255, 255, 25),
         WHITE(255, 255, 255),
         CYAN(20, 178, 226),
         CYAN_DEVIANT(20, 177, 225),

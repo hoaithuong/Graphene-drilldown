@@ -57,7 +57,6 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
 
     private IndigoRestRequest indigoRestRequest;
     ProjectRestRequest projectRestRequest;
-    private String editerUser;
 
     @Override
     protected void customizeProject() throws Throwable {
@@ -78,7 +77,7 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
 
     @Override
     protected void addUsersWithOtherRolesToProject() throws JSONException, IOException {
-        editerUser = createAndAddUserToProject(UserRoles.EDITOR);
+        createAndAddUserToProject(UserRoles.EDITOR);
     }
 
     @Test(dependsOnGroups = "createProject")
@@ -143,10 +142,8 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
 
         ChartReport chartReport = indigoDashboardsPage
             .getWidgetByHeadline(Insight.class, SOURCE_INSIGHT_HAS_TWO_MEASURES).getChartReport();
-        chartReport.clickOnElement(Pair.of(0, 1));
-        indigoDashboardsPage.waitForDrillModalDialogLoading();
-
-        DrillModalDialog drillModalDialog = DrillModalDialog.getInstance(browser);
+            DrillModalDialog drillModalDialog = chartReport.openDrillingPicker(Pair.of(0, 1)).drillToInsight();
+            indigoDashboardsPage.waitForDrillModalDialogLoading();
         ChartReport drillChartReport = DrillModalDialog.getInstance(browser).getChartReport();
 
         // This assert is to cover the bug ONE-4587 - Infinite rendering loop of visualisation in KD
@@ -156,11 +153,11 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
         assertEquals(drillModalDialog.getTitleInsight(), SOURCE_INSIGHT_HAS_TWO_MEASURES);
         drillModalDialog.close();
 
-        chartReport.clickOnElement(Pair.of(1, 1));
+        chartReport.openDrillingPicker(Pair.of(1, 1)).drillToInsight();
         indigoDashboardsPage.waitForDrillModalDialogLoading();
 
         // This assert is to cover the bug ONE-4587 - Infinite rendering loop of visualisation in KD
-        assertEquals(drillChartReport.checkColorColumn(0, 0), ColorPaletteRequestData.ColorPalette.CYAN.toString());
+        assertEquals(drillChartReport.checkColorColumn(0, 0), ColorPaletteRequestData.ColorPalette.YELLOW_LIGHT.toString());
         assertEquals(drillChartReport.getYaxisTitle(), METRIC_BEST_CASE);
         assertEquals(drillChartReport.getXaxisLabels(), asList("Direct Sales", "2011"));
         assertEquals(drillChartReport.getDataLabels(), asList("13,273,818"));
@@ -184,7 +181,7 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
 
         indigoDashboardsPage.saveEditModeWithWidgets();
 
-        chartReport.clickOnElement(Pair.of(0, 1));
+        chartReport.openDrillingPicker(Pair.of(0, 1)).drillToInsight();
         indigoDashboardsPage.waitForDrillModalDialogLoading();
         assertEquals(drillChartReport.getYaxisTitle(), METRIC_BEST_CASE);
         assertEquals(drillChartReport.getXaxisLabels(), asList("Direct Sales", "2011"));
@@ -225,7 +222,7 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
             indigoDashboardsPage.waitForDrillModalDialogLoading();
 
             DrillModalDialog drillModalDialog = DrillModalDialog.getInstance(browser);
-            ChartReport drillChartReport = DrillModalDialog.getInstance(browser).getChartReport();
+            ChartReport drillChartReport = drillModalDialog.getChartReport();
 
             assertEquals(drillChartReport.getYaxisTitle(), METRIC_AMOUNT);
             assertEquals(drillChartReport.getXaxisLabels(), asList("Exclude"));
@@ -244,7 +241,7 @@ public class KPIDashboardsDrillToInsightTest extends AbstractDashboardTest {
             indigoDashboardsPage.waitForDrillModalDialogLoading();
 
             drillModalDialog = DrillModalDialog.getInstance(browser);
-            drillChartReport = DrillModalDialog.getInstance(browser).getChartReport();
+            drillChartReport = drillModalDialog.getChartReport();
 
             assertEquals(drillChartReport.getYaxisTitle(), METRIC_AMOUNT);
             assertEquals(drillChartReport.getXaxisLabels(), asList("Exclude"));

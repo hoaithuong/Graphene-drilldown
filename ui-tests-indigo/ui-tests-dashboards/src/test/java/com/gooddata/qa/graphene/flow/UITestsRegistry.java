@@ -52,6 +52,7 @@ import com.gooddata.qa.graphene.indigo.dashboards.KPIDashboardCRUDAndMovingTest;
 import com.gooddata.qa.graphene.indigo.dashboards.ResizeWidgetsAndRowsTest;
 import com.gooddata.qa.graphene.indigo.dashboards.ExportKPIDashboardsToPDF;
 import com.gooddata.qa.graphene.indigo.dashboards.KPIDashboardsDrillToInsightTest;
+import com.gooddata.qa.graphene.indigo.dashboards.KPIDashboardsDrillDownTest;
 import com.gooddata.qa.graphene.indigo.dashboards.postMessage.ControlFilterEmbeddedKDFromExternalApplication;
 import com.gooddata.qa.utils.flow.TestsRegistry;
 
@@ -142,6 +143,7 @@ public class UITestsRegistry {
             ResizeWidgetsAndRowsTest.class,
             ExportKPIDashboardsToPDF.class,
             KPIDashboardsDrillToInsightTest.class,
+            KPIDashboardsDrillDownTest.class,
             ControlFilterEmbeddedKDFromExternalApplication.class,
             "testng-desktop-AttributeFiltering.xml",
             "testng-desktop-DateFiltering.xml",

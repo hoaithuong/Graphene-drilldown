@@ -3,6 +3,8 @@ package com.gooddata.qa.utils.http.attribute;
 import com.gooddata.qa.utils.http.CommonRestRequest;
 import com.gooddata.qa.utils.http.RestClient;
 import com.gooddata.qa.utils.http.RestRequest;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
@@ -11,8 +13,11 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
+
 public class AttributeRestRequest extends CommonRestRequest {
     private static final String SET_ATTRIBUTE_PROTECT_TEMPLATE = "{\"setProtected\": {\"items\": [%s]}}";
+    private static final String SET_ATTRIBUTE_DRILL_DOWN_TEMPLATE = "{\"drillDownStepAttributeDF\": \"%s\"}";
     private static final String SET_PROTECT_API_TEMPLATE = "/gdc/md/%s/objects/setFlag/protected";
 
     private static final String UNSET_PROTECT_API_TEMPLATE = "/gdc/md/%s/objects/unsetFlag/protected";
@@ -27,14 +32,27 @@ public class AttributeRestRequest extends CommonRestRequest {
 
     /**
      * Set flag 'protected' to attribute
+     * 
      * @param attributesUri
      */
     public void setAttributeProtected(String... attributesUri) {
-        restClient.execute(
-                RestRequest.initPostRequest(
-                        format(SET_PROTECT_API_TEMPLATE, projectId),
-                        format(SET_ATTRIBUTE_PROTECT_TEMPLATE, quoteUris(attributesUri))),
-                HttpStatus.NO_CONTENT);
+        restClient.execute(RestRequest.initPostRequest(format(SET_PROTECT_API_TEMPLATE, projectId),
+                format(SET_ATTRIBUTE_PROTECT_TEMPLATE, quoteUris(attributesUri))), HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Set drill down attribute
+     * @param attributeTitle
+     * @param attributesDrillToUri
+     * @throws IOException
+     * @throws JSONException
+     */
+    public void setDrillDown(String attributeTitle, String attributesDrillToUri) throws JSONException, IOException {
+        String uri = getAttributeByTitle(attributeTitle).getUri();
+        JSONObject json = getJsonObject(uri);
+        JSONObject content = json.getJSONObject("attribute").getJSONObject("content");
+        content.put("drillDownStepAttributeDF", attributesDrillToUri);
+        executeRequest(RestRequest.initPutRequest(uri, json.toString()), HttpStatus.OK);
     }
 
     /**
